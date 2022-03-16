@@ -63,4 +63,24 @@ class Utils
             hex2bin(mb_substr($data, $dataLength / 2, null, '8bit')),
         ];
     }
+
+    /**
+     * Ensure all array keys are well formatted.
+     * @param array $legitKeys
+     * @param array $arrayToValid
+     * @return void
+     */
+    public static function validArrayKey(array $legitKeys, array $arrayToValid)
+    {
+        foreach ($arrayToValid as $key => $value) {
+
+            if (!in_array($key, $legitKeys, true)) {
+                throw new \UnexpectedValueException('Invalid array key:  ' . $key . ' is not recognize');
+            }
+
+            if (is_array($value)) {
+                self::validArrayKey($legitKeys, $value);
+            }
+        }
+    }
 }
