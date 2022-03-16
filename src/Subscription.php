@@ -53,10 +53,20 @@ class Subscription implements SubscriptionInterface
 
     /**
      * @param array $associativeArray (with keys endpoint, publicKey, authToken, contentEncoding)
-     * @throws \ErrorException
+     * @throws \ErrorException | \UnexpectedValueException
      */
     public static function create(array $associativeArray): self
     {
+        Utils::validArrayKey([
+            'endpoint',
+            'keys',
+            'p256dh',
+            'auth',
+            'contentEncoding',
+            'publicKey',
+            'authToken'
+        ], $associativeArray);
+
         if (array_key_exists('keys', $associativeArray) && is_array($associativeArray['keys'])) {
             return new self(
                 $associativeArray['endpoint'],
